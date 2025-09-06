@@ -61,16 +61,18 @@ func (s *Server) setupRoutes() {
 		authGroup.GET("/me", authHandlers.GetCurrentUser)
 	}
 
+	// Public routes
+	s.router.GET("/api/songs", songHandlers.ListSongs)
+	s.router.GET("/api/songs/:id", songHandlers.GetSong)
+
 	// Protected API routes
 	api := s.router.Group("/api")
 	api.Use(s.authMiddleware())
 	{
 		// Song routes
 		api.POST("/songs", songHandlers.CreateSong)
-		api.GET("/songs/:id", songHandlers.GetSong)
 		api.PUT("/songs/:id", songHandlers.UpdateSong)
 		api.DELETE("/songs/:id", songHandlers.DeleteSong)
-		api.GET("/songs", songHandlers.ListSongs)
 
 		// Vote routes
 		api.POST("/songs/:id/vote", voteHandlers.Vote)
