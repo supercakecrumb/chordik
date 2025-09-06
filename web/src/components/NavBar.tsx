@@ -1,6 +1,8 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import IconButton from './ui/IconButton'
+import CompactActionButton from './ui/CompactActionButton'
+import { PlusIcon } from '@heroicons/react/24/outline'
 
 const NavBar = () => {
   const { user, logout } = useAuth()
@@ -33,9 +35,12 @@ const NavBar = () => {
             </Link>
             <div className="hidden md:flex items-center gap-5 text-ink-300">
               {user && (
-                <Link to="/chords/new" className="hover:text-trans-blue transition-colors relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:right-0 after:h-0.5 after:bg-gradient-to-r after:from-trans-blue after:to-trans-pink after:opacity-0 hover:after:opacity-100">
-                  Create
-                </Link>
+                <CompactActionButton
+                  variant="primary"
+                  icon={<PlusIcon className="h-5 w-5" />}
+                  label="Create"
+                  onClick={() => navigate('/chords/new')}
+                />
               )}
             </div>
           </div>
