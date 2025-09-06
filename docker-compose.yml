@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    networks:
+      - chordik_net
+    environment:
+      POSTGRES_USER: chordik
+      POSTGRES_PASSWORD: chordikpass
+      POSTGRES_DB: chordik_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chordik"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    networks:
+      - chordik_net
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_USER: chordik
+      DB_PASSWORD: chordikpass
+      DB_NAME: chordik_db
+      DB_PORT: 5432
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  web:
+    networks:
+      - chordik_net
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80/tcp"
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      VITE_API_URL: http://api:8080/api
+
+volumes:
+  postgres_data:
+
+networks:
+  chordik_net:
+    driver: bridge
