@@ -3,6 +3,8 @@ FROM node:20 AS builder
 
 WORKDIR /app
 COPY package.json package-lock.json ./
+# Update npm to latest version
+RUN npm install -g npm@latest
 RUN npm ci
 
 COPY . .
