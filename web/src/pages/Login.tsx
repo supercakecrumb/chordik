@@ -36,24 +36,12 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-base-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 relative">
-        {/* Gradient border effect */}
-        <div className="absolute inset-0 rounded-xl pointer-events-none"
-             style={{
-               background: 'linear-gradient(90deg,#5AC8FA55,#FF8AB355)',
-               mask: 'linear-gradient(#fff,#fff) content-box, linear-gradient(#fff,#fff)',
-               WebkitMaskComposite: 'xor',
-               padding: '1.5px',
-               borderRadius: 'var(--radius)'
-             }}></div>
         
-        <div className="relative bg-base-800 rounded-xl p-8">
+        <div className="bg-base-800 rounded-xl p-8">
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-trans-blue to-trans-pink">
               Sign in to your account
             </h2>
-            <p className="mt-2 text-center text-sm text-ink-300">
-              Use admin@example.com/admin to sign in
-            </p>
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             {error && (
@@ -100,7 +88,7 @@ const Login = () => {
             <div>
               <Button
                 type="submit"
-                variant="primary"
+                variant="gradient"
                 disabled={loading}
                 className="w-full"
               >
@@ -114,10 +102,6 @@ const Login = () => {
               </Button>
             </div>
           </form>
-          <div className="text-center text-sm text-ink-300">
-            <p>For this demo, use credentials:</p>
-            <p className="font-mono">admin@example.com / admin</p>
-          </div>
         </div>
       </div>
     </div>

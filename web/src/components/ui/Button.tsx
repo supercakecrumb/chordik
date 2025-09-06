@@ -1,7 +1,7 @@
 import React, { ButtonHTMLAttributes } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'voteUp' | 'voteDown';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'voteUp' | 'voteDown' | 'gradient';
   className?: string;
 }
 
@@ -20,6 +20,7 @@ const Button: React.FC<ButtonProps> = ({
     danger: 'btn-danger',
     voteUp: 'btn-vote',
     voteDown: 'btn-vote',
+    gradient: 'btn-gradient',
   };
   
   // Add data-state for vote buttons
