@@ -3,6 +3,7 @@ import ChordProRenderer from './ChordProRenderer'
 import { parseChordPro } from '../utils/chordProParser'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Card from './ui/Card'
 
 const SongCard = ({ song }: { song: Song }) => {
   const [parsedLines, setParsedLines] = useState<ReturnType<typeof parseChordPro>>([])
@@ -22,17 +23,19 @@ const SongCard = ({ song }: { song: Song }) => {
   }
 
   return (
-    <div
-      className="bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+    <Card
+      className="p-4 cursor-pointer hover:shadow-lg transition-shadow"
       onClick={handleClick}
     >
       <div className="flex justify-between items-start">
         <div>
-          <h3 className="text-lg font-bold text-primary">{song.Title}</h3>
-          <p className="text-muted">{song.Artist}</p>
+          <h3 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-trans-blue to-trans-pink">
+            {song.Title}
+          </h3>
+          <p className="text-ink-300">{song.Artist}</p>
         </div>
         {song.Key && (
-          <span className="bg-gray-700 text-xs px-2 py-1 rounded">
+          <span className="bg-base-600 text-xs px-2 py-1 rounded">
             {song.Key}
           </span>
         )}
@@ -44,11 +47,11 @@ const SongCard = ({ song }: { song: Song }) => {
       </div>
 
       <div className="mt-4 flex justify-between items-center">
-        <span className="text-sm text-muted">
+        <span className="text-sm text-ink-300">
           Added by {song.CreatedBy.DisplayName}
         </span>
       </div>
-    </div>
+    </Card>
   )
 }
 

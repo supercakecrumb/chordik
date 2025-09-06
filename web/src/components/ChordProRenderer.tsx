@@ -1,13 +1,32 @@
 import { SongLine, ChordSegment } from '../utils/chordProParser'
-import { ReactNode } from 'react'
 
 interface ChordProRendererProps {
   lines: SongLine[]
 }
 
 const ChordProRenderer = ({ lines }: ChordProRendererProps) => {
+  // Function to render chord tokens with proper spacing
+  const renderChordTokens = (segments: ChordSegment[]) => {
+    return segments.map((segment: ChordSegment, i) => (
+      <span
+        key={i}
+        className="chord-token"
+        style={{ minWidth: `${segment.lyric.length}ch`, display: 'inline-block' }}
+      >
+        {segment.chord}
+      </span>
+    ));
+  };
+
+  // Function to render lyric line
+  const renderLyricLine = (segments: ChordSegment[]) => {
+    return segments.map((segment: ChordSegment, i) => (
+      <span key={i}>{segment.lyric}</span>
+    ));
+  };
+
   return (
-    <div className="font-mono space-y-4">
+    <div className="chord-sheet">
       {lines.map((line, index) => {
         if (line.type === 'metadata') {
           // Don't render metadata lines
@@ -18,8 +37,17 @@ const ChordProRenderer = ({ lines }: ChordProRendererProps) => {
           if (line.content === '') {
             return <div key={index} className="h-4"></div>
           }
+          // Section headings (Verse/Chorus)
+          if (typeof line.content === 'string' &&
+              (line.content.startsWith('[Verse') || line.content.startsWith('[Chorus') || line.content.startsWith('['))) {
+            return (
+              <div key={index} className="chord-section">
+                {line.content}
+              </div>
+            )
+          }
           return (
-            <div key={index} className="text-white">
+            <div key={index} className="lyric-row">
               {line.content as string}
             </div>
           )
@@ -28,25 +56,15 @@ const ChordProRenderer = ({ lines }: ChordProRendererProps) => {
         // Type guard for chord lines
         if (line.type === 'chords' && Array.isArray(line.content)) {
           return (
-            <div key={index} className="space-y-1">
+            <div key={index} className="chord-line">
               {/* Chord line */}
-              <div className="flex">
-                {line.content.map((segment: ChordSegment, i) => (
-                  <span 
-                    key={i}
-                    className="text-primary font-bold"
-                    style={{ minWidth: `${segment.lyric.length}ch` }}
-                  >
-                    {segment.chord}
-                  </span>
-                ))}
+              <div className="chord-row">
+                {renderChordTokens(line.content)}
               </div>
               
               {/* Lyric line */}
-              <div className="text-white">
-                {line.content.map((segment: ChordSegment, i) => (
-                  <span key={i}>{segment.lyric}</span>
-                ))}
+              <div className="lyric-row">
+                {renderLyricLine(line.content)}
               </div>
             </div>
           )
