@@ -1,9 +1,10 @@
 import { ChangeEvent, useState, useEffect } from 'react'
 import { useDebounce } from '../hooks/useDebounce'
 import { searchSongs } from '../api/songs'
+import { Song } from '../types'
 
 interface SearchResult {
-  songs: any[]
+  songs: Song[]
   total: number
 }
 

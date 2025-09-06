@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Song } from '../types'
 import SongCard from '../components/SongCard'
 import SearchBar from '../components/SearchBar'
 import { searchSongs } from '../api/songs'
+import axios from 'axios'
 
 interface SearchResult {
   songs: Song[]
@@ -13,6 +14,46 @@ const Home = () => {
   const [results, setResults] = useState<SearchResult>({ songs: [], total: 0 })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
+
+  useEffect(() => {
+    // Load all songs when component mounts
+    loadSongs()
+  }, [])
+
+  const loadSongs = async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/songs`, {
+        params: {
+          limit: 100 // Load all songs
+        },
+        withCredentials: true
+      })
+      // Transform the response to match our expected structure
+      const songs = response.data.songs.map((song: any) => ({
+        ID: song.ID,
+        Title: song.Title,
+        Artist: song.Artist,
+        BodyChordPro: song.BodyChordPro,
+        Key: song.Key,
+        CreatedBy: song.CreatedBy,
+        CreatedAt: song.CreatedAt,
+        UpdatedAt: song.UpdatedAt
+      }))
+      setResults({
+        songs,
+        total: response.data.total
+      })
+    } catch (err) {
+      setError('Failed to load songs')
+      console.error('Error loading songs:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleSearchResults = async (result: SearchResult) => {
     setResults(result)
@@ -38,7 +79,7 @@ const Home = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {results.songs.map(song => (
-            <SongCard key={song.id} song={song} />
+            <SongCard key={song.ID} song={song} />
           ))}
         </div>
       )}

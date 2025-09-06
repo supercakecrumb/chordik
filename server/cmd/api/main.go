@@ -23,11 +23,6 @@ func main() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	// Run migrations
-	if err := db.Migrate(database.DB); err != nil {
-		log.Fatalf("Failed to run migrations: %v", err)
-	}
-
 	// Initialize badges
 	badgeService := badges.NewBadgeService(database.DB)
 	if err := badgeService.InitializeBadges(); err != nil {
