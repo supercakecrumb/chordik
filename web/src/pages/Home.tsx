@@ -4,6 +4,7 @@ import SongCard from '../components/SongCard'
 import { searchSongs } from '../api/songs'
 import axios from 'axios'
 import { useSearchParams } from 'react-router-dom'
+import { API_BASE } from '../config'
 
 interface SearchResult {
   songs: Song[]
@@ -16,8 +17,6 @@ const Home = () => {
   const [error, setError] = useState<string | null>(null)
   const [searchParams] = useSearchParams()
   
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
-
   useEffect(() => {
     const query = searchParams.get('q')
     if (query) {
@@ -33,7 +32,7 @@ const Home = () => {
     setLoading(true)
     setError(null)
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/songs`, {
+      const response = await axios.get(`${API_BASE}/songs`, {
         params: {
           limit: 100 // Load all songs
         },
