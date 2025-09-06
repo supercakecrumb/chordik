@@ -4,6 +4,7 @@ import axios from 'axios'
 import ChordProRenderer from '../components/ChordProRenderer'
 import { parseChordPro } from '../utils/chordProParser'
 import { Song } from '../types'
+import { deleteSong } from '../api/songs'
 
 const SongDetail = () => {
   const { id } = useParams<{ id: string }>()
@@ -12,6 +13,7 @@ const SongDetail = () => {
   const [parsedLines, setParsedLines] = useState<ReturnType<typeof parseChordPro>>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [deleting, setDeleting] = useState(false)
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
 
@@ -45,6 +47,23 @@ const SongDetail = () => {
       fetchSong()
     }
   }, [id])
+
+  const handleDelete = async () => {
+    if (!song || !window.confirm('Are you sure you want to delete this song?')) {
+      return
+    }
+
+    setDeleting(true)
+    try {
+      await deleteSong(song.ID)
+      // Redirect to home page after successful deletion
+      navigate('/')
+    } catch (err) {
+      setError('Failed to delete song')
+      console.error('Delete song error:', err)
+      setDeleting(false)
+    }
+  }
 
   useEffect(() => {
     if (song) {
@@ -92,12 +111,27 @@ const SongDetail = () => {
             </span>
           )}
         </div>
-        <button
-          onClick={() => navigate('/')}
-          className="px-4 py-2 border border-gray-600 text-muted rounded-md hover:bg-gray-700 transition-colors"
-        >
-          Back to Songs
-        </button>
+        <div className="flex space-x-2">
+          <button
+            onClick={() => navigate(`/songs/${song.ID}/edit`)}
+            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80 transition-colors"
+          >
+            Edit
+          </button>
+          <button
+            onClick={handleDelete}
+            disabled={deleting}
+            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors disabled:opacity-50"
+          >
+            {deleting ? 'Deleting...' : 'Delete'}
+          </button>
+          <button
+            onClick={() => navigate('/')}
+            className="px-4 py-2 border border-gray-600 text-muted rounded-md hover:bg-gray-700 transition-colors"
+          >
+            Back to Songs
+          </button>
+        </div>
       </div>
 
       <div className="bg-gray-800 rounded-xl p-6 mb-6">
