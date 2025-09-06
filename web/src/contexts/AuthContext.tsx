@@ -48,7 +48,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         email,
         password
       }, {
-        withCredentials: true
+        withCredentials: true,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
       })
       // After successful login, check auth status to get user data
       await checkAuthStatus()
@@ -60,7 +63,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     try {
       await axios.post(`${API_BASE_URL}/api/auth/logout`, {}, {
-        withCredentials: true
+        withCredentials: true,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
       })
       setUser(null)
     } catch (error) {

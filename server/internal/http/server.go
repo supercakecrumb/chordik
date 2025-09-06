@@ -3,6 +3,7 @@ package http
 import (
 	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/supercakecrumb/chordik/internal/auth"
 	"github.com/supercakecrumb/chordik/internal/songs"
@@ -26,6 +27,14 @@ func NewServer(db *gorm.DB) *Server {
 		songService: songs.NewSongService(db),
 		voteService: votes.NewVoteService(db),
 	}
+
+	// Add CORS middleware
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:5173"}
+	config.AllowCredentials = true
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+	s.router.Use(cors.New(config))
 
 	// Add CSRF protection middleware for mutating requests
 	s.router.Use(csrfMiddleware())
@@ -108,7 +117,8 @@ func (s *Server) authMiddleware() gin.HandlerFunc {
 
 func csrfMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if c.Request.Method == http.MethodGet || c.Request.Method == http.MethodHead {
+		// Allow GET, HEAD, and OPTIONS requests (OPTIONS is for CORS preflight)
+		if c.Request.Method == http.MethodGet || c.Request.Method == http.MethodHead || c.Request.Method == http.MethodOptions {
 			c.Next()
 			return
 		}
