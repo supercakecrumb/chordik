@@ -5,7 +5,8 @@ import { useAuth } from '../contexts/AuthContext'
 import { Song } from '../types'
 import { updateSong } from '../api/songs'
 import Input from '../components/ui/Input'
-import Button from '../components/ui/Button'
+import CompactActionButton from '../components/ui/CompactActionButton'
+import { ArrowLeftIcon, PencilIcon } from '@heroicons/react/24/outline'
 
 const EditSong = () => {
   const [title, setTitle] = useState('')
@@ -166,13 +167,20 @@ const EditSong = () => {
           </p>
         </div>
         
-        <div className="flex justify-end space-x-4">
-          <Button variant="ghost" type="button" onClick={() => navigate(-1)}>
-            Cancel
-          </Button>
-          <Button variant="primary" type="submit" disabled={loading}>
-            {loading ? 'Updating...' : 'Update Song'}
-          </Button>
+        <div className="flex justify-end gap-3">
+          <CompactActionButton
+            variant="secondary"
+            icon={<ArrowLeftIcon className="h-5 w-5" />}
+            label="Cancel"
+            onClick={() => navigate(-1)}
+          />
+          <CompactActionButton
+            variant="primary"
+            icon={<PencilIcon className="h-5 w-5" />}
+            label={loading ? 'Updating...' : 'Update Song'}
+            type="submit"
+            loading={loading}
+          />
         </div>
       </form>
     </div>
