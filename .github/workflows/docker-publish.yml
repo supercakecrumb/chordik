@@ -40,7 +40,7 @@ jobs:
           file: web/Dockerfile
           push: true
           build-args: |
-            VITE_API_BASE_URL=/api
+            VITE_API_BASE_URL=
           tags: |
             ghcr.io/supercakecrumb/chordik/web:${{ github.ref_name }}
             ghcr.io/supercakecrumb/chordik/web:latest
