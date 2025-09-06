@@ -58,6 +58,15 @@ a { text-underline-offset: 3px; }
   color: var(--txt);
 }
 .input::placeholder { color: #8AA0B9; }
+.input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(90, 200, 250, 0.35);
+}
+.input:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(90, 200, 250, 0.35);
+}
 
 /* Button system */
 .btn {
@@ -73,11 +82,25 @@ a { text-underline-offset: 3px; }
 .btn-primary {
   color: #051018;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.12)) ,
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.12)),
     linear-gradient(90deg, var(--primary), #92E3FF);
   border-color: rgba(146,227,255,.25);
 }
 .btn-primary:hover { filter: brightness(1.05); }
+
+.btn-gradient {
+  color: #051018;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.12)),
+    linear-gradient(90deg, var(--primary), var(--secondary));
+  border-color: rgba(90,200,250,.25);
+}
+
+.btn-gradient:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(90, 200, 250, 0.2);
+}
 
 .btn-secondary {
   color: #1a0a11;
@@ -93,7 +116,6 @@ a { text-underline-offset: 3px; }
   border-color: rgba(231,238,246,0.12);
 }
 .btn-ghost:hover { background: rgba(231,238,246,0.06); }
-
 .btn-danger {
   color: #1f0b0f;
   background:
