@@ -1,6 +1,6 @@
 services:
   web:
-    image: ghcr.io/supercakecrumb/chordik/web:v0.0.7
+    image: ghcr.io/supercakecrumb/chordik/web:latest
     restart: always
     environment:
       - API_BASE_URL=/api
@@ -10,7 +10,7 @@ services:
     networks: [chordik-net]
 
   api:
-    image: ghcr.io/supercakecrumb/chordik/server:v0.0.7
+    image: ghcr.io/supercakecrumb/chordik/server:latest
     restart: always
     environment:
       - DB_HOST=db
