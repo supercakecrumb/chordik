@@ -20,16 +20,24 @@ const CreateSong = () => {
     setLoading(true)
     setError('')
 
+    // Filter out metadata lines from bodyChordPro
+    const filteredBodyChordPro = bodyChordPro
+      .split('\n')
+      .filter(line => !line.match(/^\{(title|artist|key):/))
+      .join('\n')
+      .trim()
+
     try {
       const response = await axios.post(`${API_BASE_URL}/api/songs`, {
         title,
         artist,
         key,
-        bodyChordPro
+        bodyChordPro: filteredBodyChordPro
       }, {
         withCredentials: true,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
         }
       })
 
@@ -109,11 +117,7 @@ const CreateSong = () => {
             rows={15}
             className="w-full px-3 py-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-primary font-mono text-sm"
             required
-            placeholder={`{title:Song Title}
-{artist:Artist Name}
-{key:Key}
-
-[Am]This is a [F]sample [C]song with [G]chords
+            placeholder={`[Am]This is a [F]sample [C]song with [G]chords
 [Am]Each chord is [F]written in [C]square [G]brackets`}
           />
           <p className="mt-2 text-sm text-muted">
