@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useAuth } from '../contexts/AuthContext'
 import Input from '../components/ui/Input'
-import Button from '../components/ui/Button'
+import CompactActionButton from '../components/ui/CompactActionButton'
 import Card from '../components/ui/Card'
+import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/24/outline'
 
 const CreateSong = () => {
   const [title, setTitle] = useState('')
@@ -127,13 +128,20 @@ const CreateSong = () => {
           </p>
         </div>
         
-        <div className="flex justify-end space-x-4">
-          <Button variant="ghost" type="button" onClick={() => navigate('/')}>
-            Cancel
-          </Button>
-          <Button variant="primary" type="submit" disabled={loading}>
-            {loading ? 'Creating...' : 'Create Song'}
-          </Button>
+        <div className="flex justify-end gap-3">
+          <CompactActionButton
+            variant="secondary"
+            icon={<ArrowLeftIcon className="h-5 w-5" />}
+            label="Cancel"
+            onClick={() => navigate('/')}
+          />
+          <CompactActionButton
+            variant="primary"
+            icon={<PlusIcon className="h-5 w-5" />}
+            label={loading ? 'Creating...' : 'Create Song'}
+            type="submit"
+            loading={loading}
+          />
         </div>
       </form>
     </div>
