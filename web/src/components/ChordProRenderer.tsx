@@ -10,11 +10,8 @@ const ChordProRenderer = ({ lines }: ChordProRendererProps) => {
     <div className="font-mono space-y-4">
       {lines.map((line, index) => {
         if (line.type === 'metadata') {
-          return (
-            <div key={index} className="text-center text-muted text-sm">
-              {line.content as string}
-            </div>
-          )
+          // Don't render metadata lines
+          return null
         }
 
         if (line.type === 'lyrics') {

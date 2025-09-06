@@ -37,3 +37,44 @@ export const searchSongs = async (query: string): Promise<SearchResult> => {
     throw error
   }
 }
+
+export const updateSong = async (id: string, songData: Partial<Song>): Promise<Song> => {
+  try {
+    const response = await axios.put(`${API_BASE_URL}/api/songs/${id}`, songData, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    // Transform the response to match our expected structure
+    const updatedSong: Song = {
+      ID: response.data.ID,
+      Title: response.data.Title,
+      Artist: response.data.Artist,
+      BodyChordPro: response.data.BodyChordPro,
+      Key: response.data.Key,
+      CreatedBy: response.data.CreatedBy,
+      CreatedAt: response.data.CreatedAt,
+      UpdatedAt: response.data.UpdatedAt
+    }
+    return updatedSong
+  } catch (error) {
+    console.error('Failed to update song:', error)
+    throw error
+  }
+}
+
+export const deleteSong = async (id: string): Promise<void> => {
+  try {
+    await axios.delete(`${API_BASE_URL}/api/songs/${id}`, {
+      withCredentials: true,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+  } catch (error) {
+    console.error('Failed to delete song:', error)
+    throw error
+  }
+}

@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import NavBar from './components/NavBar'
 import Login from './pages/Login'
 import CreateSong from './pages/CreateSong'
+import EditSong from './pages/EditSong'
 import SongDetail from './pages/SongDetail'
 import { AuthProvider } from './contexts/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -23,6 +24,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <CreateSong />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/songs/:id/edit"
+                element={
+                  <ProtectedRoute>
+                    <EditSong />
                   </ProtectedRoute>
                 }
               />
