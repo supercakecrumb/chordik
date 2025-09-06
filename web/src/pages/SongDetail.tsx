@@ -8,6 +8,7 @@ import { deleteSong } from '../api/songs'
 import CompactActionButton from '../components/ui/CompactActionButton'
 import Card from '../components/ui/Card'
 import { ArrowLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { API_BASE } from '../config'
 
 const SongDetail = () => {
   const { id } = useParams<{ id: string }>()
@@ -18,12 +19,10 @@ const SongDetail = () => {
   const [error, setError] = useState('')
   const [deleting, setDeleting] = useState(false)
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
-
   useEffect(() => {
     const fetchSong = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/songs/${id}`, {
+        const response = await axios.get(`${API_BASE}/songs/${id}`, {
           withCredentials: true
         })
         // Transform the response to match our expected structure

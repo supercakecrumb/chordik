@@ -7,6 +7,7 @@ import { updateSong } from '../api/songs'
 import Input from '../components/ui/Input'
 import CompactActionButton from '../components/ui/CompactActionButton'
 import { ArrowLeftIcon, PencilIcon } from '@heroicons/react/24/outline'
+import { API_BASE } from '../config'
 
 const EditSong = () => {
   const [title, setTitle] = useState('')
@@ -20,13 +21,11 @@ const EditSong = () => {
   const { id } = useParams<{ id: string }>()
   const { user } = useAuth()
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
-
   // Fetch song data when component mounts
   useEffect(() => {
     const fetchSong = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/songs/${id}`, {
+        const response = await axios.get(`${API_BASE}/songs/${id}`, {
           withCredentials: true
         })
         

@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string) => {
     try {
-      await axios.post(`${API_BASE_URL}/api/auth/login`, {
+      await axios.post(`${API_BASE}/auth/login`, {
         email,
         password
       }, {
@@ -62,7 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
-      await axios.post(`${API_BASE_URL}/api/auth/logout`, {}, {
+      await axios.post(`${API_BASE}/auth/logout`, {}, {
         withCredentials: true,
         headers: {
           'X-Requested-With': 'XMLHttpRequest'

@@ -32,7 +32,7 @@ const CreateSong = () => {
       .trim()
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/songs`, {
+      const response = await axios.post(`${API_BASE}/songs`, {
         title,
         artist,
         key,
