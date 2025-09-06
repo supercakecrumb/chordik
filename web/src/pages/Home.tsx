@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Song } from '../types'
 import SongCard from '../components/SongCard'
-import SearchBar from '../components/SearchBar'
 import { searchSongs } from '../api/songs'
 import axios from 'axios'
+import { useSearchParams } from 'react-router-dom'
 
 interface SearchResult {
   songs: Song[]
@@ -14,13 +14,20 @@ const Home = () => {
   const [results, setResults] = useState<SearchResult>({ songs: [], total: 0 })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-
+  const [searchParams] = useSearchParams()
+  
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
 
   useEffect(() => {
-    // Load all songs when component mounts
-    loadSongs()
-  }, [])
+    const query = searchParams.get('q')
+    if (query) {
+      // Perform search
+      performSearch(query)
+    } else {
+      // Load all songs when component mounts
+      loadSongs()
+    }
+  }, [searchParams])
 
   const loadSongs = async () => {
     setLoading(true)
@@ -55,19 +62,23 @@ const Home = () => {
     }
   }
 
-  const handleSearchResults = async (result: SearchResult) => {
-    setResults(result)
+  const performSearch = async (query: string) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const results = await searchSongs(query)
+      setResults(results)
+    } catch (err) {
+      setError('Failed to search songs')
+      console.error('Error searching songs:', err)
+      setResults({ songs: [], total: 0 })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-trans-blue to-trans-pink">
-          Chordik
-        </h1>
-        <SearchBar onSearchResults={handleSearchResults} />
-      </div>
-
       {error && (
         <div className="bg-danger/20 border border-danger/30 text-danger px-4 py-3 rounded">
           {error}
