@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import Button from './ui/Button'
+import IconButton from './ui/IconButton'
 
 const NavBar = () => {
   const { user, logout } = useAuth()
@@ -15,7 +15,6 @@ const NavBar = () => {
       console.error('Logout failed:', error)
     }
   }
-
 
   return (
     <header className="sticky top-0 z-40 bg-base-800/95 backdrop-blur border-b border-white/10">
@@ -47,15 +46,12 @@ const NavBar = () => {
             {user ? (
               <div className="flex items-center space-x-3">
                 <span className="text-ink-300 text-sm font-medium">{user.displayName}</span>
-                <button
-                  onClick={handleLogout}
-                  className="p-2 rounded-full hover:bg-base-600 focus-ring transition-all duration-200 ease-in-out group min-w-[40px] min-h-[40px]"
-                  aria-label="Logout"
-                >
-                  <div className="relative">
+                <IconButton
+                  variant="ghost"
+                  icon={
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-ink-300 group-hover:text-white transition-colors duration-200"
+                      className="h-5 w-5"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -67,20 +63,19 @@ const NavBar = () => {
                         d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                       />
                     </svg>
-                    <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 trans-gradient-ring"></div>
-                  </div>
-                </button>
+                  }
+                  onClick={handleLogout}
+                  aria-label="Logout"
+                />
               </div>
             ) : (
               <Link to="/login">
-                <button
-                  className="flex items-center space-x-2 p-2 rounded-full hover:bg-base-600 focus-ring transition-all duration-200 ease-in-out group min-w-[40px] min-h-[40px]"
-                  aria-label="Log in to Chordik"
-                >
-                  <div className="relative">
+                <IconButton
+                  variant="ghost"
+                  icon={
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-ink-300 group-hover:text-white transition-colors duration-200"
+                      className="h-5 w-5"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -92,10 +87,9 @@ const NavBar = () => {
                         d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
                       />
                     </svg>
-                    <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 trans-gradient-ring"></div>
-                  </div>
-                  <span className="text-ink-300 text-sm font-medium hidden sm:inline">Login</span>
-                </button>
+                  }
+                  aria-label="Log in to Chordik"
+                />
               </Link>
             )}
           </div>

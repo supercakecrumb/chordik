@@ -88,7 +88,7 @@ const Login = () => {
             <div>
               <Button
                 type="submit"
-                variant="gradient"
+                variant="primary"
                 disabled={loading}
                 className="w-full"
               >

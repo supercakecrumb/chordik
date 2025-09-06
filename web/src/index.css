@@ -70,64 +70,6 @@ a { text-underline-offset: 3px; }
   box-shadow: 0 0 0 2px rgba(90, 200, 250, 0.35);
 }
 
-/* Button system */
-.btn {
-  position: relative;
-  border-radius: .8rem;
-  font-weight: 600;
-  padding: .9rem 1rem;
-  transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
-  border: 1px solid rgba(231,238,246,0.10);
-  display: block;
-  width: 100%;
-}
-.btn:active { transform: translateY(1px); }
-
-.btn-primary {
-  color: #051018;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.12)),
-    linear-gradient(90deg, var(--primary), #92E3FF);
-  border: 1px solid rgba(146,227,255,.25);
-}
-.btn-primary:hover { filter: brightness(1.05); }
-
-.btn-gradient {
-  color: #051018;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.12)),
-    linear-gradient(90deg, var(--primary), var(--secondary));
-  border: 1px solid rgba(90,200,250,.25);
-}
-
-.btn-gradient:hover {
-  filter: brightness(1.05);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(90, 200, 250, 0.2);
-}
-
-.btn-secondary {
-  color: #1a0a11;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.14)),
-    linear-gradient(90deg, var(--secondary), #FFC0D4);
-  border: 1px solid rgba(255,192,212,.25);
-}
-
-.btn-ghost {
-  color: var(--txt);
-  background: transparent;
-  border: 1px solid rgba(231,238,246,0.12);
-}
-.btn-ghost:hover { background: rgba(231,238,246,0.06); }
-.btn-danger {
-  color: #1f0b0f;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.14)),
-    linear-gradient(90deg, var(--danger), #FF97A5);
-  border: 1px solid rgba(255,92,112,.28);
-}
-
 /* Focus styles for interactive elements */
 .focus-ring {
   outline: none;
@@ -137,24 +79,6 @@ a { text-underline-offset: 3px; }
 /* Trans gradient ring for interactive elements */
 .trans-gradient-ring {
   box-shadow: 0 0 0 2px rgba(90,200,250,0.5), 0 0 0 4px rgba(255,138,179,0.5);
-}
-
-/* Vote toggles use duotone */
-.btn-vote {
-  border-radius: .8rem;
-  padding: .55rem .8rem;
-  background: var(--bg-elev);
-  border: 1px solid rgba(231,238,246,0.1);
-}
-.btn-vote[data-state="up"] {
-  border-color: rgba(90,200,250,.5);
-  background: linear-gradient(180deg, rgba(90,200,250,.15), rgba(90,200,250,.05));
-  color: var(--primary);
-}
-.btn-vote[data-state="down"] {
-  border-color: rgba(255,138,179,.5);
-  background: linear-gradient(180deg, rgba(255,138,179,.15), rgba(255,138,179,.05));
-  color: var(--secondary);
 }
 
 /* Chord sheet container */
@@ -224,5 +148,14 @@ a { text-underline-offset: 3px; }
 @layer utilities {
   .text-muted {
     @apply text-[#8B9EB3];
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

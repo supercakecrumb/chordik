@@ -5,8 +5,9 @@ import ChordProRenderer from '../components/ChordProRenderer'
 import { parseChordPro } from '../utils/chordProParser'
 import { Song } from '../types'
 import { deleteSong } from '../api/songs'
-import Button from '../components/ui/Button'
+import CompactActionButton from '../components/ui/CompactActionButton'
 import Card from '../components/ui/Card'
+import { ArrowLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline'
 
 const SongDetail = () => {
   const { id } = useParams<{ id: string }>()
@@ -103,7 +104,7 @@ const SongDetail = () => {
 
   return (
     <div className="max-w-4xl mx-auto py-8">
-      <div className="flex justify-between items-start mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
           <h1 className="text-4xl font-extrabold tracking-tight2 bg-clip-text text-transparent bg-gradient-to-r from-trans-blue to-trans-pink">
             {song.Title}
@@ -115,16 +116,26 @@ const SongDetail = () => {
             </span>
           )}
         </div>
-        <div className="flex space-x-2">
-          <Button variant="secondary" onClick={() => navigate(`/songs/${song.ID}/edit`)}>
-            Edit
-          </Button>
-          <Button variant="danger" onClick={handleDelete} disabled={deleting}>
-            {deleting ? 'Deleting...' : 'Delete'}
-          </Button>
-          <Button variant="ghost" onClick={() => navigate('/')}>
-            Back to Songs
-          </Button>
+        <div className="flex gap-3">
+          <CompactActionButton
+            variant="primary"
+            icon={<ArrowLeftIcon className="h-5 w-5" />}
+            label="Back to Songs"
+            onClick={() => navigate('/')}
+          />
+          <CompactActionButton
+            variant="secondary"
+            icon={<PencilIcon className="h-5 w-5" />}
+            label="Edit"
+            onClick={() => navigate(`/songs/${song.ID}/edit`)}
+          />
+          <CompactActionButton
+            variant="danger"
+            icon={<TrashIcon className="h-5 w-5" />}
+            label="Delete"
+            onClick={handleDelete}
+            loading={deleting}
+          />
         </div>
       </div>
 
