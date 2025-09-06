@@ -1,0 +1,44 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    tags:
+      - 'v*'   # Trigger on tags starting with 'v'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push server image
+        uses: docker/build-push-action@v5
+        with:
+          context: server
+          file: server/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/supecakecrumb/chordik/server:${{ github.ref_name }}
+            ghcr.io/supecakecrumb/chordik/server:latest
+
+      - name: Build and push web image
+        uses: docker/build-push-action@v5
+        with:
+          context: web
+          file: web/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/supecakecrumb/chordik/web:${{ github.ref_name }}
+            ghcr.io/supecakecrumb/chordik/web:latest
