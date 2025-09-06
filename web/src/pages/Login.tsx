@@ -39,7 +39,7 @@ const Login = () => {
         
         <div className="bg-base-800 rounded-xl p-8">
           <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-trans-blue to-trans-pink">
+            <h2 className="text-center text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-trans-blue to-trans-pink">
               Sign in to your account
             </h2>
           </div>
@@ -52,7 +52,7 @@ const Login = () => {
               </div>
             )}
             <input type="hidden" name="remember" value="true" />
-            <div className="rounded-md shadow-sm -space-y-px">
+            <div className="space-y-4">
               <div>
                 <label htmlFor="email" className="sr-only">
                   Email
@@ -68,7 +68,7 @@ const Login = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div className="pt-4">
+              <div>
                 <label htmlFor="password" className="sr-only">
                   Password
                 </label>
