@@ -102,6 +102,12 @@ a { text-underline-offset: 3px; }
   border-color: rgba(255,92,112,.28);
 }
 
+/* Focus styles for interactive elements */
+.focus-ring {
+  outline: none;
+  box-shadow: var(--shadow-ring);
+}
+
 /* Vote toggles use duotone */
 .btn-vote {
   border-radius: .8rem;

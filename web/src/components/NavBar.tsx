@@ -45,11 +45,28 @@ const NavBar = () => {
           {/* Right: Auth */}
           <div className="justify-self-end">
             {user ? (
-              <div className="flex items-center space-x-4">
-                <span className="text-ink-300 hidden sm:inline">{user.displayName}</span>
-                <Button variant="ghost" onClick={handleLogout}>
-                  Logout
-                </Button>
+              <div className="flex items-center space-x-3">
+                <span className="text-ink-300 text-sm font-medium">{user.displayName}</span>
+                <button
+                  onClick={handleLogout}
+                  className="p-2 rounded-full hover:bg-base-600 focus-ring transition-colors"
+                  aria-label="Logout"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-ink-300 hover:text-trans-pink transition-colors"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                    />
+                  </svg>
+                </button>
               </div>
             ) : (
               <Link to="/login">
