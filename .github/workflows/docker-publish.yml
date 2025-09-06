@@ -30,8 +30,8 @@ jobs:
           file: server/Dockerfile
           push: true
           tags: |
-            ghcr.io/supecakecrumb/chordik/server:${{ github.ref_name }}
-            ghcr.io/supecakecrumb/chordik/server:latest
+            ghcr.io/supercakecrumb/chordik/server:${{ github.ref_name }}
+            ghcr.io/supercakecrumb/chordik/server:latest
 
       - name: Build and push web image
         uses: docker/build-push-action@v5
@@ -40,5 +40,5 @@ jobs:
           file: web/Dockerfile
           push: true
           tags: |
-            ghcr.io/supecakecrumb/chordik/web:${{ github.ref_name }}
-            ghcr.io/supecakecrumb/chordik/web:latest
+            ghcr.io/supercakecrumb/chordik/web:${{ github.ref_name }}
+            ghcr.io/supercakecrumb/chordik/web:latest
