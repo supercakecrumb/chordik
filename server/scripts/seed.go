@@ -25,7 +25,7 @@ func main() {
 
 	// Check if admin user already exists
 	var adminUser db.User
-	result := database.DB.Where("email = ?", "admin").First(&adminUser)
+	result := database.DB.Where("email = ?", "admin@example.com").First(&adminUser)
 
 	// If admin user doesn't exist, create it
 	if result.Error != nil {
@@ -35,7 +35,7 @@ func main() {
 		}
 
 		adminUser = db.User{
-			Email:        "admin",
+			Email:        "admin@example.com",
 			PasswordHash: string(hashedPassword),
 			DisplayName:  "Administrator",
 		}
