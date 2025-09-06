@@ -37,7 +37,9 @@ export default {
       },
       borderRadius: {
         'xl': '1rem',
-        'xl2': '1.25rem' // card radius
+        'xl2': '1.25rem', // card radius
+        '2xl': '1.25rem', // button radius
+        'btn': '1.25rem'  // button radius
       },
       boxShadow: {
         soft: '0 8px 30px rgba(0,0,0,0.25)',
@@ -54,6 +56,10 @@ export default {
       lineHeight: {
         snugger: '1.2',   // global tighter
         chord: '1.05'     // chord row height
+      },
+      transitionDuration: {
+        150: '150ms',
+        200: '200ms'
       }
     },
   },
