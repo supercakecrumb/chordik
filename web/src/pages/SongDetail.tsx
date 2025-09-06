@@ -5,6 +5,8 @@ import ChordProRenderer from '../components/ChordProRenderer'
 import { parseChordPro } from '../utils/chordProParser'
 import { Song } from '../types'
 import { deleteSong } from '../api/songs'
+import Button from '../components/ui/Button'
+import Card from '../components/ui/Card'
 
 const SongDetail = () => {
   const { id } = useParams<{ id: string }>()
@@ -75,16 +77,16 @@ const SongDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-base-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-trans-blue"></div>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+      <div className="min-h-screen bg-base-900 flex items-center justify-center">
+        <div className="bg-danger/20 border border-danger/30 text-danger px-4 py-3 rounded">
           {error}
         </div>
       </div>
@@ -93,8 +95,8 @@ const SongDetail = () => {
 
   if (!song) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-white">Song not found</div>
+      <div className="min-h-screen bg-base-900 flex items-center justify-center">
+        <div className="text-trans-white">Song not found</div>
       </div>
     )
   }
@@ -103,42 +105,34 @@ const SongDetail = () => {
     <div className="max-w-4xl mx-auto py-8">
       <div className="flex justify-between items-start mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-primary">{song.Title}</h1>
-          <p className="text-muted text-lg">{song.Artist}</p>
+          <h1 className="text-4xl font-extrabold tracking-tight2 bg-clip-text text-transparent bg-gradient-to-r from-trans-blue to-trans-pink">
+            {song.Title}
+          </h1>
+          <p className="text-ink-200 text-lg">{song.Artist}</p>
           {song.Key && (
-            <span className="inline-block bg-gray-700 text-xs px-2 py-1 rounded mt-2">
+            <span className="inline-block bg-base-600 text-xs px-2 py-1 rounded mt-2">
               Key: {song.Key}
             </span>
           )}
         </div>
         <div className="flex space-x-2">
-          <button
-            onClick={() => navigate(`/songs/${song.ID}/edit`)}
-            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80 transition-colors"
-          >
+          <Button variant="secondary" onClick={() => navigate(`/songs/${song.ID}/edit`)}>
             Edit
-          </button>
-          <button
-            onClick={handleDelete}
-            disabled={deleting}
-            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors disabled:opacity-50"
-          >
+          </Button>
+          <Button variant="danger" onClick={handleDelete} disabled={deleting}>
             {deleting ? 'Deleting...' : 'Delete'}
-          </button>
-          <button
-            onClick={() => navigate('/')}
-            className="px-4 py-2 border border-gray-600 text-muted rounded-md hover:bg-gray-700 transition-colors"
-          >
+          </Button>
+          <Button variant="ghost" onClick={() => navigate('/')}>
             Back to Songs
-          </button>
+          </Button>
         </div>
       </div>
 
-      <div className="bg-gray-800 rounded-xl p-6 mb-6">
+      <Card className="p-6 sm:p-8 mb-6">
         <ChordProRenderer lines={parsedLines} />
-      </div>
+      </Card>
 
-      <div className="flex justify-between items-center text-sm text-muted">
+      <div className="flex justify-between items-center text-sm text-ink-300">
         <span>Added by {song.CreatedBy.DisplayName}</span>
         <span>Created: {new Date(song.CreatedAt).toLocaleDateString()}</span>
       </div>

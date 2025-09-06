@@ -4,6 +4,8 @@ import axios from 'axios'
 import { useAuth } from '../contexts/AuthContext'
 import { Song } from '../types'
 import { updateSong } from '../api/songs'
+import Input from '../components/ui/Input'
+import Button from '../components/ui/Button'
 
 const EditSong = () => {
   const [title, setTitle] = useState('')
@@ -87,67 +89,66 @@ const EditSong = () => {
 
   if (fetching) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-base-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-trans-blue"></div>
       </div>
     )
   }
 
   return (
     <div className="max-w-2xl mx-auto py-8">
-      <h1 className="text-3xl font-bold text-primary mb-6">Edit Song</h1>
+      <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-trans-blue to-trans-pink mb-6">
+        Edit Song
+      </h1>
       
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+        <div className="bg-danger/20 border border-danger/30 text-danger px-4 py-3 rounded mb-6">
           {error}
         </div>
       )}
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-muted mb-1">
+          <label htmlFor="title" className="block text-sm font-medium text-ink-300 mb-1">
             Song Title
           </label>
-          <input
+          <Input
             type="text"
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-primary"
             required
           />
         </div>
         
         <div>
-          <label htmlFor="artist" className="block text-sm font-medium text-muted mb-1">
+          <label htmlFor="artist" className="block text-sm font-medium text-ink-300 mb-1">
             Artist
           </label>
-          <input
+          <Input
             type="text"
             id="artist"
             value={artist}
             onChange={(e) => setArtist(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-primary"
             required
           />
         </div>
         
         <div>
-          <label htmlFor="key" className="block text-sm font-medium text-muted mb-1">
+          <label htmlFor="key" className="block text-sm font-medium text-ink-300 mb-1">
             Key (Optional)
           </label>
-          <input
+          <Input
             type="text"
             id="key"
             value={key}
             onChange={(e) => setKey(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="e.g., C, G, Am"
           />
         </div>
         
         <div>
-          <label htmlFor="bodyChordPro" className="block text-sm font-medium text-muted mb-1">
+          <label htmlFor="bodyChordPro" className="block text-sm font-medium text-ink-300 mb-1">
             ChordPro Content
           </label>
           <textarea
@@ -155,31 +156,23 @@ const EditSong = () => {
             value={bodyChordPro}
             onChange={(e) => setBodyChordPro(e.target.value)}
             rows={15}
-            className="w-full px-3 py-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-primary font-mono text-sm"
+            className="input font-mono text-sm"
             required
             placeholder={`[Am]This is a [F]sample [C]song with [G]chords
 [Am]Each chord is [F]written in [C]square [G]brackets`}
           />
-          <p className="mt-2 text-sm text-muted">
+          <p className="mt-2 text-sm text-ink-300">
             Use ChordPro format. Wrap chords in square brackets like [C] or [Am].
           </p>
         </div>
         
         <div className="flex justify-end space-x-4">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="px-4 py-2 border border-gray-600 text-muted rounded-md hover:bg-gray-700 transition-colors"
-          >
+          <Button variant="ghost" type="button" onClick={() => navigate(-1)}>
             Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
-          >
+          </Button>
+          <Button variant="primary" type="submit" disabled={loading}>
             {loading ? 'Updating...' : 'Update Song'}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

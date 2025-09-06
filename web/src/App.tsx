@@ -7,12 +7,17 @@ import EditSong from './pages/EditSong'
 import SongDetail from './pages/SongDetail'
 import { AuthProvider } from './contexts/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
+import { useEffect } from 'react'
 
 function App() {
+  useEffect(() => {
+    document.title = 'Chordik';
+  }, []);
+
   return (
     <Router>
       <AuthProvider>
-        <div className="min-h-screen bg-gray-900 text-white">
+        <div className="min-h-screen bg-base-900 text-trans-white">
           <NavBar />
           <main className="container mx-auto p-4">
             <Routes>

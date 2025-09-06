@@ -2,6 +2,174 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg-page: #0b0f13;
+  --bg-shell: #11161d;
+  --bg-card: #161c24;
+  --bg-elev: #1c232e;
+  --txt: #E7EEF6;
+  --txt-muted: #8AA0B9;
+  --primary: #5AC8FA;   /* trans blue */
+  --secondary: #FF8AB3; /* trans pink */
+  --danger: #FF5C70;
+
+  --radius: 1.25rem;
+  --shadow-soft: 0 8px 30px rgba(0,0,0,0.25);
+  --shadow-ring: 0 0 0 2px rgba(90,200,250,0.35);
+}
+
+html, body, #root {
+  background: var(--bg-page);
+  color: var(--txt);
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* Link underline accent */
+a { text-underline-offset: 3px; }
+
+/* Focus ring */
+*:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-ring);
+  border-radius: .6rem;
+}
+
+/* Scrollbars minimal */
+*::-webkit-scrollbar { height: 10px; width: 10px; }
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(90,200,250,.6), rgba(255,138,179,.6));
+  border-radius: 8px;
+}
+
+/* Card surface */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(231,238,246,0.06);
+}
+
+/* Input baseline */
+.input {
+  background: var(--bg-elev);
+  border: 1px solid rgba(231,238,246,0.10);
+  border-radius: .8rem;
+  padding: .9rem 1rem;
+  color: var(--txt);
+}
+.input::placeholder { color: #8AA0B9; }
+
+/* Button system */
+.btn {
+  position: relative;
+  border-radius: .9rem;
+  font-weight: 600;
+  padding: .7rem 1.1rem;
+  transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
+  border: 1px solid transparent;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  color: #051018;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.12)) ,
+    linear-gradient(90deg, var(--primary), #92E3FF);
+  border-color: rgba(146,227,255,.25);
+}
+.btn-primary:hover { filter: brightness(1.05); }
+
+.btn-secondary {
+  color: #1a0a11;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.14)),
+    linear-gradient(90deg, var(--secondary), #FFC0D4);
+  border-color: rgba(255,192,212,.25);
+}
+
+.btn-ghost {
+  color: var(--txt);
+  background: transparent;
+  border-color: rgba(231,238,246,0.12);
+}
+.btn-ghost:hover { background: rgba(231,238,246,0.06); }
+
+.btn-danger {
+  color: #1f0b0f;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.14)),
+    linear-gradient(90deg, var(--danger), #FF97A5);
+  border-color: rgba(255,92,112,.28);
+}
+
+/* Vote toggles use duotone */
+.btn-vote {
+  border-radius: .8rem;
+  padding: .55rem .8rem;
+  background: var(--bg-elev);
+  border: 1px solid rgba(231,238,246,0.1);
+}
+.btn-vote[data-state="up"] {
+  border-color: rgba(90,200,250,.5);
+  background: linear-gradient(180deg, rgba(90,200,250,.15), rgba(90,200,250,.05));
+  color: var(--primary);
+}
+.btn-vote[data-state="down"] {
+  border-color: rgba(255,138,179,.5);
+  background: linear-gradient(180deg, rgba(255,138,179,.15), rgba(255,138,179,.05));
+  color: var(--secondary);
+}
+
+/* Chord sheet container */
+.chord-sheet {
+  font-family: 'JetBrains Mono', Menlo, Consolas, monospace;
+  line-height: 1.2;
+  letter-spacing: 0;
+  font-size: 15.5px;  /* slightly smaller, denser */
+  color: var(--txt);
+}
+
+/* Each logical lyric line; chords inline above */
+.chord-line {
+  display: grid;
+  grid-template-rows: auto auto;
+  row-gap: 6px;              /* reduced vertical space between chord & lyric */
+  margin: 10px 0;            /* tighter between lines */
+}
+
+/* When rendering chords separately above the lyric line */
+.chord-row {
+  line-height: 1.05;         /* extra tight */
+  transform: translateY(1px) /* visually nudge closer */;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* Chord tokens */
+.chord-token {
+  color: var(--primary);
+  text-shadow: 0 0 0 rgba(0,0,0,0.01); /* crisp */
+}
+
+/* Section headings (Verse/Chorus) */
+.chord-section {
+  margin: 14px 0 8px;
+  color: var(--secondary);
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+/* CodeMirror/Editor area */
+.cm-theme .cm-content {
+  line-height: 1.2;
+  font-family: 'JetBrains Mono', Menlo, Consolas, monospace;
+}
+.cm-editor {
+  background: var(--bg-elev);
+  border: 1px solid rgba(231,238,246,0.10);
+  border-radius: var(--radius);
+}
+
 @layer base {
   body {
     @apply bg-[#0B0E11] text-[#E6EDF3];
@@ -13,14 +181,6 @@
 
   a {
     @apply text-primary hover:text-primary/80 transition-colors;
-  }
-
-  .btn-primary {
-    @apply bg-primary hover:bg-primary/90 text-white font-medium rounded-lg px-4 py-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-900;
-  }
-
-  .btn-secondary {
-    @apply bg-secondary hover:bg-secondary/90 text-white font-medium rounded-lg px-4 py-2 transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-gray-900;
   }
 }
 
