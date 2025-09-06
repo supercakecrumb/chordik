@@ -108,6 +108,11 @@ a { text-underline-offset: 3px; }
   box-shadow: var(--shadow-ring);
 }
 
+/* Trans gradient ring for interactive elements */
+.trans-gradient-ring {
+  box-shadow: 0 0 0 2px rgba(90,200,250,0.5), 0 0 0 4px rgba(255,138,179,0.5);
+}
+
 /* Vote toggles use duotone */
 .btn-vote {
   border-radius: .8rem;
