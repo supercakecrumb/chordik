@@ -3,52 +3,51 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/supercakecrumb/chordik/internal/db"
 	"golang.org/x/crypto/bcrypt"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 )
 
 func main() {
-	// Update these with your local PostgreSQL credentials
-	dsn := "host=localhost user=postgres password=postgres dbname=postgres port=5432 sslmode=disable"
-	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	// Connect to the database
+	// Use environment variables if available, otherwise use default values for Docker
+	host := getEnv("DB_HOST", "db")
+	user := getEnv("DB_USER", "chordik")
+	password := getEnv("DB_PASSWORD", "chordikpass")
+	dbname := getEnv("DB_NAME", "chordik_db")
+	port := getEnv("DB_PORT", "5432")
+
+	database, err := db.NewPostgresConnection(host, user, password, dbname, port)
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	// Create database if it doesn't exist
-	database.Exec("CREATE DATABASE chordik_db;")
+	// Check if admin user already exists
+	var adminUser db.User
+	result := database.DB.Where("email = ?", "admin").First(&adminUser)
 
-	// Connect to the new database
-	dsn = "host=localhost user=postgres password=postgres dbname=chordik_db port=5432 sslmode=disable"
-	database, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		log.Fatal("Failed to connect to chordik_db:", err)
+	// If admin user doesn't exist, create it
+	if result.Error != nil {
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte("admin"), bcrypt.DefaultCost)
+		if err != nil {
+			log.Fatal("Failed to hash password:", err)
+		}
+
+		adminUser = db.User{
+			Email:        "admin",
+			PasswordHash: string(hashedPassword),
+			DisplayName:  "Administrator",
+		}
+		if err := database.DB.Create(&adminUser).Error; err != nil {
+			log.Fatal("Failed to create user:", err)
+		}
+		fmt.Println("Admin user created successfully")
+	} else {
+		fmt.Println("Admin user already exists")
 	}
 
-	// Auto migrate models
-	if err := database.AutoMigrate(&db.User{}, &db.Session{}, &db.Song{}, &db.SongLike{}, &db.Badge{}, &db.UserBadge{}); err != nil {
-		log.Fatal("Failed to migrate database:", err)
-	}
-
-	// Create user
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte("aurora"), bcrypt.DefaultCost)
-	if err != nil {
-		log.Fatal("Failed to hash password:", err)
-	}
-
-	user := db.User{
-		Email:        "aurora@example.com",
-		PasswordHash: string(hashedPassword),
-		DisplayName:  "aurora",
-	}
-	if err := database.Create(&user).Error; err != nil {
-		log.Fatal("Failed to create user:", err)
-	}
-
-	// Create songs
+	// Create songs if they don't exist
 	songData := []struct {
 		title    string
 		artist   string
@@ -60,16 +59,33 @@ func main() {
 	}
 
 	for _, s := range songData {
-		song := db.Song{
-			Title:        s.title,
-			Artist:       s.artist,
-			BodyChordPro: s.chordpro,
-			CreatedByID:  user.ID,
-		}
-		if err := database.Create(&song).Error; err != nil {
-			log.Fatal("Failed to create song:", err)
+		var existingSong db.Song
+		result := database.DB.Where("title = ? AND artist = ?", s.title, s.artist).First(&existingSong)
+
+		// If song doesn't exist, create it
+		if result.Error != nil {
+			song := db.Song{
+				Title:        s.title,
+				Artist:       s.artist,
+				BodyChordPro: s.chordpro,
+				CreatedByID:  adminUser.ID,
+			}
+			if err := database.DB.Create(&song).Error; err != nil {
+				log.Fatal("Failed to create song:", err)
+			}
+			fmt.Printf("Song '%s' by '%s' created successfully\n", s.title, s.artist)
+		} else {
+			fmt.Printf("Song '%s' by '%s' already exists\n", s.title, s.artist)
 		}
 	}
 
 	fmt.Println("Database seeded successfully")
+}
+
+// getEnv returns the value of an environment variable or a default value if not set
+func getEnv(key, defaultValue string) string {
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
+	return defaultValue
 }

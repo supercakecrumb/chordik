@@ -10,13 +10,28 @@ export interface SearchResult {
 
 export const searchSongs = async (query: string): Promise<SearchResult> => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/songs`, {
+    const response = await axios.get(`${API_BASE_URL}/api/songs`, {
       params: {
         search: query,
         limit: 20
-      }
+      },
+      withCredentials: true
     })
-    return response.data
+    // Transform the response to match our expected structure
+    const songs = response.data.songs.map((song: any) => ({
+      ID: song.ID,
+      Title: song.Title,
+      Artist: song.Artist,
+      BodyChordPro: song.BodyChordPro,
+      Key: song.Key,
+      CreatedBy: song.CreatedBy,
+      CreatedAt: song.CreatedAt,
+      UpdatedAt: song.UpdatedAt
+    }))
+    return {
+      songs,
+      total: response.data.total
+    }
   } catch (error) {
     console.error('Failed to search songs:', error)
     throw error

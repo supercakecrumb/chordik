@@ -1,11 +1,18 @@
+export interface User {
+  ID: string
+  Email: string
+  DisplayName: string
+  CreatedAt: string
+  UpdatedAt: string
+}
+
 export interface Song {
-  id: string
-  title: string
-  artist: string
-  bodyChordpro: string
-  key?: string
-  createdBy: string
-  createdAt: string
-  updatedAt: string
-  score: number
+  ID: string
+  Title: string
+  Artist: string
+  BodyChordPro: string
+  Key?: string
+  CreatedBy: User
+  CreatedAt: string
+  UpdatedAt: string
 }
