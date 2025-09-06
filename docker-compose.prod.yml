@@ -1,15 +1,16 @@
 services:
   web:
-    image: ghcr.io/supercakecrumb/chordik/web:latest
+    image: ghcr.io/supercakecrumb/chordik/web:v0.0.7
     restart: always
     environment:
       - API_BASE_URL=/api
+      - VITE_API_BASE_URL=https://chordik.vkiel.com
     ports:
       - "127.0.0.1:8081:80"      # localhost only
     networks: [chordik-net]
 
   api:
-    image: ghcr.io/supercakecrumb/chordik/server:latest
+    image: ghcr.io/supercakecrumb/chordik/server:v0.0.7
     restart: always
     environment:
       - DB_HOST=db
