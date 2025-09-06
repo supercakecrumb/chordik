@@ -28,9 +28,9 @@ func NewServer(db *gorm.DB) *Server {
 		voteService: votes.NewVoteService(db),
 	}
 
-	// Add CORS middleware
+	// Add CORS middleware (allow all origins)
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:5173"}
+	config.AllowAllOrigins = true
 	config.AllowCredentials = true
 	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With"}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
