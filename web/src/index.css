@@ -173,3 +173,31 @@ a { text-underline-offset: 3px; }
   color: var(--primary);
   font-weight: 700;
 }
+
+.gradient-text {
+  background: linear-gradient(
+    90deg,
+    #ff9aa2,  /* soft pink/red */
+    #ffb347,  /* peach/orange */
+    #fff59d,  /* pale yellow */
+    #a8e6cf,  /* mint green */
+    #a1c4fd,  /* light blue */
+    #cba6f7   /* lavender/purple */
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes rainbow-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
