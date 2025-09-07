@@ -82,10 +82,10 @@ func (s *SongService) UpdateSong(userID, songID uuid.UUID, title, artist, bodyCh
 	}
 
 	updates := map[string]interface{}{
-		"title":         title,
-		"artist":        artist,
-		"body_chordpro": bodyChordPro,
-		"key":           key,
+		"title":          title,
+		"artist":         artist,
+		"body_chord_pro": bodyChordPro,
+		"key":            key,
 	}
 
 	if err := s.db.Model(&song).Updates(updates).Error; err != nil {

@@ -24,7 +24,7 @@ const Login = () => {
       navigate('/')
     } catch (err: any) {
       if (err.response?.status === 401) {
-        setError('Invalid credentials. Please use admin/admin.')
+        setError('Invalid credentials')
       } else {
         setError('Login failed. Please try again.')
       }
