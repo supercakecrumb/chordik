@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import ChordProRenderer from '../components/ChordProRenderer'
 import { parseChordPro } from '../utils/chordProParser'
 import { Song } from '../types'
@@ -8,7 +7,7 @@ import { deleteSong } from '../api/songs'
 import CompactActionButton from '../components/ui/CompactActionButton'
 import Card from '../components/ui/Card'
 import { ArrowLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline'
-import { API_BASE } from '../config'
+import http from '../http'
 
 const SongDetail = () => {
   const { id } = useParams<{ id: string }>()
@@ -22,21 +21,8 @@ const SongDetail = () => {
   useEffect(() => {
     const fetchSong = async () => {
       try {
-        const response = await axios.get(`${API_BASE}/songs/${id}`, {
-          withCredentials: true
-        })
-        // Transform the response to match our expected structure
-        const transformedSong = {
-          ID: response.data.ID,
-          Title: response.data.Title,
-          Artist: response.data.Artist,
-          BodyChordPro: response.data.BodyChordPro,
-          Key: response.data.Key,
-          CreatedBy: response.data.CreatedBy,
-          CreatedAt: response.data.CreatedAt,
-          UpdatedAt: response.data.UpdatedAt
-        }
-        setSong(transformedSong as any)
+        const response = await http.get<Song>(`/songs/${id}`)
+        setSong(response.data)
       } catch (err) {
         setError('Failed to load song')
         console.error('Error fetching song:', err)

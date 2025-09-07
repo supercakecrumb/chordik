@@ -78,6 +78,36 @@ Chordik uses a custom design system with:
 - **Typography**: Inter for UI, JetBrains Mono for chord sheets
 - **Components**: Reusable UI components in `web/src/components/ui`
 
+## API Base URL Configuration
+
+The application supports multiple ways to configure the API base URL:
+
+### Build-time Configuration
+Set the `VITE_API_BASE_URL` environment variable when building the frontend:
+```bash
+VITE_API_BASE_URL=https://api.example.com npm run build
+```
+
+In Docker builds, use the build argument:
+```bash
+docker build --build-arg VITE_API_BASE_URL=https://api.example.com -t my-chordik .
+```
+
+### Runtime Configuration
+The application loads configuration from `/env.js` at runtime. To override the API base URL:
+1. Create a file at `web/public/env.js`:
+```javascript
+window.__ENV = {
+  API_BASE_URL: 'https://api.example.com'
+};
+```
+2. Rebuild the application or replace the file in the deployed version
+
+### Configuration Precedence
+1. Runtime override (`window.__ENV.API_BASE_URL`)
+2. Build-time environment variable (`VITE_API_BASE_URL`)
+3. Default value (`/api`)
+
 ## Contributing
 
 1. Fork the repository

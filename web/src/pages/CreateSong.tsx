@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { useAuth } from '../contexts/AuthContext'
 import Input from '../components/ui/Input'
 import CompactActionButton from '../components/ui/CompactActionButton'
 import Card from '../components/ui/Card'
 import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/24/outline'
-import { API_BASE } from '../config'
+import http from '../http'
 
 
 const CreateSong = () => {
@@ -32,17 +31,11 @@ const CreateSong = () => {
       .trim()
 
     try {
-      const response = await axios.post(`${API_BASE}/songs`, {
+      const response = await http.post('/songs', {
         title,
         artist,
         key,
         bodyChordPro: filteredBodyChordPro
-      }, {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
-        }
       })
 
       if (response.status === 201) {
