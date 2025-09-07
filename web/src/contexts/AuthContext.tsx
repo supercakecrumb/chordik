@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react'
+import { API_BASE } from '../config'
 import axios from 'axios'
 
 interface User {
@@ -16,9 +17,6 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -30,7 +28,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const checkAuthStatus = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/auth/me`, {
+      const response = await axios.get(`${API_BASE}/api/auth/me`, {
         withCredentials: true
       })
       setUser(response.data)
