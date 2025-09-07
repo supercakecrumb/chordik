@@ -88,21 +88,21 @@ services:
       start_period: 30s
     restart: unless-stopped
 
-  web:
-    networks:
-      - chordik_net
-    build:
-      context: ./web
-      dockerfile: Dockerfile
-    ports:
-      - "5173:80/tcp"
-    depends_on:
-      api:
-        condition: service_healthy
-    environment:
-      # API base URL for development
-      VITE_API_BASE_URL: http://localhost:8080
-    restart: unless-stopped
+  # web:
+  #   networks:
+  #     - chordik_net
+  #   build:
+  #     context: ./web
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "5173:80/tcp"
+  #   depends_on:
+  #     api:
+  #       condition: service_healthy
+  #   environment:
+  #     # API base URL for development
+  #     VITE_API_BASE_URL: http://localhost:8080
+  #   restart: unless-stopped
 
 volumes:
   postgres_data:
