@@ -6,24 +6,46 @@ interface ChordProRendererProps {
 }
 
 const ChordProRenderer = ({ lines, preview = false }: ChordProRendererProps) => {
+  // normalize helpers
+  const normalizeLyric = (s: string) => s.replace(/\t/g, '    ');
+  const collapseSpaces = (s: string) => s.replace(/\s{2,}/g, ' ');
+
   // Function to render chord tokens with proper spacing
   const renderChordTokens = (segments: ChordSegment[]) => {
-    return segments.map((segment: ChordSegment, i) => (
-      <span
-        key={i}
-        className="chord-token"
-        style={{ minWidth: `${segment.lyric.length}ch`, display: 'inline-block' }}
-      >
-        {segment.chord}
-      </span>
-    ));
+    return segments.map((segment: ChordSegment, i) => {
+      let segText = normalizeLyric(segment.lyric);
+      if (preview) {
+        segText = collapseSpaces(segText);
+        if (i === 0) segText = segText.replace(/^\s+/, '');
+        const cols = Math.max(1, Math.min(8, segText.length));
+        return (
+          <span
+            key={i}
+            className="chord-token"
+            style={{ display: 'inline-block', minWidth: `${cols}ch` }}
+          >
+            {segment.chord}
+          </span>
+        );
+      } else {
+        return (
+          <span
+            key={i}
+            className="chord-token"
+            style={{ minWidth: `${segment.lyric.length}ch`, display: 'inline-block' }}
+          >
+            {segment.chord}
+          </span>
+        );
+      }
+    });
   };
 
   // Function to render lyric line
   const renderLyricLine = (segments: ChordSegment[]) => {
-    return segments.map((segment: ChordSegment, i) => (
-      <span key={i}>{segment.lyric}</span>
-    ));
+    let text = segments.map(s => normalizeLyric(s.lyric)).join('');
+    if (preview) text = collapseSpaces(text);
+    return <span>{text}</span>;
   };
 
   return (
@@ -47,9 +69,13 @@ const ChordProRenderer = ({ lines, preview = false }: ChordProRendererProps) => 
               </div>
             )
           }
+          
+          // Handle lyric lines
+          let raw = normalizeLyric(line.content as string);
+          if (preview) raw = collapseSpaces(raw);
           return (
             <div key={index} className={`lyric-row ${preview ? 'preview-line--truncate' : ''}`}>
-              {line.content as string}
+              {raw}
             </div>
           )
         }
