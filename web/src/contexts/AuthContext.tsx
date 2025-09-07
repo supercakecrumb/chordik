@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react'
-import { API_BASE } from '../config'
-import axios from 'axios'
+import http from '../http'
 
 interface User {
   id: string
@@ -28,9 +27,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const checkAuthStatus = async () => {
     try {
-      const response = await axios.get(`${API_BASE}/api/auth/me`, {
-        withCredentials: true
-      })
+      // Fixed: Remove double /api prefix - http instance already has /api in base URL
+      const response = await http.get<User>('/auth/me')
       setUser(response.data)
     } catch (error) {
       // Not authenticated, that's fine
@@ -42,14 +40,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string) => {
     try {
-      await axios.post(`${API_BASE}/auth/login`, {
+      await http.post('/auth/login', {
         email,
         password
-      }, {
-        withCredentials: true,
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest'
-        }
       })
       // After successful login, check auth status to get user data
       await checkAuthStatus()
@@ -60,12 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
-      await axios.post(`${API_BASE}/auth/logout`, {}, {
-        withCredentials: true,
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest'
-        }
-      })
+      await http.post('/auth/logout', {})
       setUser(null)
     } catch (error) {
       // Even if logout fails on server, clear local state

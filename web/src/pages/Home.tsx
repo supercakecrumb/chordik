@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react'
 import { Song } from '../types'
 import SongCard from '../components/SongCard'
 import { searchSongs } from '../api/songs'
-import axios from 'axios'
 import { useSearchParams } from 'react-router-dom'
-import { API_BASE } from '../config'
+import http from '../http'
 
 interface SearchResult {
   songs: Song[]
@@ -32,11 +31,10 @@ const Home = () => {
     setLoading(true)
     setError(null)
     try {
-      const response = await axios.get(`${API_BASE}/songs`, {
+      const response = await http.get<{ songs: any[]; total: number }>('/songs', {
         params: {
           limit: 100 // Load all songs
-        },
-        withCredentials: true
+        }
       })
       // Transform the response to match our expected structure
       const songs = response.data.songs.map((song: any) => ({

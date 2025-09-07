@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import axios from 'axios'
 import { useAuth } from '../contexts/AuthContext'
 import { Song } from '../types'
 import { updateSong } from '../api/songs'
 import Input from '../components/ui/Input'
 import CompactActionButton from '../components/ui/CompactActionButton'
 import { ArrowLeftIcon, PencilIcon } from '@heroicons/react/24/outline'
-import { API_BASE } from '../config'
+import http from '../http'
 
 const EditSong = () => {
   const [title, setTitle] = useState('')
@@ -25,9 +24,7 @@ const EditSong = () => {
   useEffect(() => {
     const fetchSong = async () => {
       try {
-        const response = await axios.get(`${API_BASE}/songs/${id}`, {
-          withCredentials: true
-        })
+        const response = await http.get<Song>(`/songs/${id}`)
         
         const song: Song = {
           ID: response.data.ID,
