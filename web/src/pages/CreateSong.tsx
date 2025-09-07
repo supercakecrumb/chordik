@@ -6,6 +6,8 @@ import Input from '../components/ui/Input'
 import CompactActionButton from '../components/ui/CompactActionButton'
 import Card from '../components/ui/Card'
 import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/24/outline'
+import { API_BASE } from '../config'
+
 
 const CreateSong = () => {
   const [title, setTitle] = useState('')
@@ -16,8 +18,6 @@ const CreateSong = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { user } = useAuth()
-
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
