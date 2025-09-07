@@ -61,6 +61,11 @@ export function parseChordPro(text: string): SongLine[] {
       if (currentLyric) {
         segments.push({ chord: '', lyric: currentLyric })
       }
+      
+      // Push any remaining chord at end of line
+      if (currentChord) {
+        segments.push({ chord: currentChord, lyric: '' })
+      }
 
       result.push({
         type: 'chords',

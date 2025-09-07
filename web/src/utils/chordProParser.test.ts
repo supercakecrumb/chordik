@@ -70,4 +70,35 @@ describe('ChordPro Parser', () => {
       }
     ])
   })
+
+  it('should parse chords at end of line', () => {
+    const text = "я кутаюсь в мокрые пряди воло[Bb]"
+    const result = parseChordPro(text)
+    
+    expect(result).toEqual([
+      {
+        type: 'chords',
+        content: [
+          { chord: '', lyric: 'я кутаюсь в мокрые пряди воло' },
+          { chord: 'Bb', lyric: '' }
+        ]
+      }
+    ])
+  })
+
+  it('should handle multiple chords including end-of-line', () => {
+    const text = "[F]Hello [Am]world[Bb]"
+    const result = parseChordPro(text)
+    
+    expect(result).toEqual([
+      {
+        type: 'chords',
+        content: [
+          { chord: 'F', lyric: 'Hello ' },
+          { chord: 'Am', lyric: 'world' },
+          { chord: 'Bb', lyric: '' }
+        ]
+      }
+    ])
+  })
 })
