@@ -20,37 +20,44 @@ const NavBar = () => {
 
   return (
     <header className="sticky top-0 z-40 bg-base-800/95 backdrop-blur border-b border-white/10">
-      <div className="mx-auto max-w-6xl px-4">
-        <div
-          className="
-            grid items-center gap-4 py-3
-            grid-cols-1
-            sm:grid-cols-[auto_1fr_auto]
-          "
-        >
-          {/* Left: Brand + (optional) inline nav on md+ */}
-          <div className="flex items-center gap-6 min-w-0">
-            <Link to="/" className="shrink-0 text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-trans-blue to-trans-pink">
+      <div className="mx-auto max-w-6xl px-4 flex items-center min-h-14">
+        <div className="flex items-center justify-between w-full flex-nowrap">
+          {/* Left: Brand */}
+          <div className="flex-none flex items-center gap-6 whitespace-nowrap">
+            <Link to="/" className="shrink-0 text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-trans-blue to-trans-pink whitespace-nowrap">
               Chordik
             </Link>
-            <div className="hidden md:flex items-center gap-5 text-ink-300">
-              {user && (
-                <CompactActionButton
-                  variant="primary"
-                  icon={<PlusIcon className="h-5 w-5" />}
-                  label="Create"
-                  onClick={() => navigate('/chords/new')}
-                />
-              )}
-            </div>
           </div>
 
+          {/* Center: Actions */}
+          <div className="flex-1 flex justify-center overflow-hidden">
+            {user && (
+              <CompactActionButton
+                variant="primary"
+                icon={<PlusIcon className="h-5 w-5" />}
+                label="Create"
+                onClick={() => navigate('/chords/new')}
+                className="hidden sm:flex whitespace-nowrap"
+              />
+            )}
+            {user && (
+              <IconButton
+                variant="primary"
+                icon={<PlusIcon className="h-5 w-5" />}
+                onClick={() => navigate('/chords/new')}
+                aria-label="Create"
+                className="sm:hidden flex-none w-9 h-9 rounded-full whitespace-nowrap"
+              />
+            )}
+          </div>
 
           {/* Right: Auth */}
-          <div className="justify-self-end">
+          <div className="flex-none flex items-center gap-2">
             {user ? (
-              <div className="flex items-center space-x-3">
-                <span className="text-ink-300 text-sm font-medium">{user.displayName}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-ink-300 text-sm font-medium max-w-[40vw] truncate hidden sm:block whitespace-nowrap">
+                  {user.displayName}
+                </span>
                 <IconButton
                   variant="ghost"
                   icon={
@@ -71,6 +78,7 @@ const NavBar = () => {
                   }
                   onClick={handleLogout}
                   aria-label="Logout"
+                  className="flex-none w-9 h-9 rounded-full whitespace-nowrap"
                 />
               </div>
             ) : (
@@ -94,6 +102,7 @@ const NavBar = () => {
                     </svg>
                   }
                   aria-label="Log in to Chordik"
+                  className="flex-none w-9 h-9 rounded-full whitespace-nowrap"
                 />
               </Link>
             )}
