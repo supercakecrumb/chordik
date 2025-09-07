@@ -159,3 +159,17 @@ a { text-underline-offset: 3px; }
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Truncation styles for preview lines */
+.preview-line--truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  width: 100%;
+}
+
+.chord-inline {
+  color: var(--primary);
+  font-weight: 700;
+}

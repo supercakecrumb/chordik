@@ -2,9 +2,10 @@ import { SongLine, ChordSegment } from '../utils/chordProParser'
 
 interface ChordProRendererProps {
   lines: SongLine[]
+  preview?: boolean
 }
 
-const ChordProRenderer = ({ lines }: ChordProRendererProps) => {
+const ChordProRenderer = ({ lines, preview = false }: ChordProRendererProps) => {
   // Function to render chord tokens with proper spacing
   const renderChordTokens = (segments: ChordSegment[]) => {
     return segments.map((segment: ChordSegment, i) => (
@@ -47,7 +48,7 @@ const ChordProRenderer = ({ lines }: ChordProRendererProps) => {
             )
           }
           return (
-            <div key={index} className="lyric-row">
+            <div key={index} className={`lyric-row ${preview ? 'preview-line--truncate' : ''}`}>
               {line.content as string}
             </div>
           )
@@ -63,7 +64,7 @@ const ChordProRenderer = ({ lines }: ChordProRendererProps) => {
               </div>
               
               {/* Lyric line */}
-              <div className="lyric-row">
+              <div className={`lyric-row ${preview ? 'preview-line--truncate' : ''}`}>
                 {renderLyricLine(line.content)}
               </div>
             </div>

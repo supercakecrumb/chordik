@@ -43,7 +43,7 @@ const SongCard = ({ song }: { song: Song }) => {
 
       {/* ChordPro Preview */}
       <div className="mt-3 text-sm">
-        <ChordProRenderer lines={previewLines} />
+        <ChordProRenderer lines={previewLines} preview={true} />
       </div>
 
       <div className="mt-4 flex justify-between items-center">
