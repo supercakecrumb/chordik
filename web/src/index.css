@@ -86,7 +86,7 @@ a { text-underline-offset: 3px; }
   font-family: 'JetBrains Mono', Menlo, Consolas, monospace;
   line-height: 1.2;
   letter-spacing: 0;
-  font-size: 15.5px;  /* slightly smaller, denser */
+  font-size: var(--chord-line-size, 15.5px);  /* Use CSS variable with fallback */
   color: var(--txt);
 }
 
@@ -98,12 +98,31 @@ a { text-underline-offset: 3px; }
   margin: 10px 0;            /* tighter between lines */
 }
 
+/* Song detail container with auto-fit capability */
+.song-detail {
+  --chord-line-size: 18px; /* Default max size for auto-fit */
+}
+
+/* When auto-fit is enabled, use the CSS variable with consistent line-height */
+.song-detail .chord-row,
+.song-detail .lyric-row {
+  white-space: pre; /* Preserve whitespace for consistent measurement */
+  font-size: var(--chord-line-size);
+  line-height: 1.4; /* Consistent line-height for accurate measurement */
+  font-variant-ligatures: none; /* Disable ligatures for stable metrics */
+}
+
 /* When rendering chords separately above the lyric line */
 .chord-row {
-  line-height: 1.05;         /* extra tight */
+  line-height: 1.05;         /* extra tight for non-auto-fit */
   transform: translateY(1px) /* visually nudge closer */;
   color: var(--primary);
   font-weight: 700;
+}
+
+/* Override the transform for auto-fit to maintain consistent spacing */
+.song-detail .chord-row {
+  transform: none; /* Remove transform for consistent measurement */
 }
 
 /* Chord tokens */
@@ -118,6 +137,11 @@ a { text-underline-offset: 3px; }
   color: var(--secondary);
   font-weight: 700;
   letter-spacing: .02em;
+}
+
+/* Ensure chord-section also uses the variable in song detail */
+.song-detail .chord-section {
+  font-size: var(--chord-line-size);
 }
 
 /* CodeMirror/Editor area */

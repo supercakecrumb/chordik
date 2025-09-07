@@ -124,8 +124,13 @@ const SongDetail = () => {
         </div>
       </div>
 
-      <Card className="p-6 sm:p-8 mb-6">
-        <ChordProRenderer lines={parsedLines} />
+      <Card className="p-6 sm:p-8 mb-6 song-detail">
+        <ChordProRenderer
+          lines={parsedLines}
+          autoFit={true}
+          maxFontSize={18}
+          minFontSize={12}
+        />
       </Card>
 
       <div className="flex justify-between items-center text-sm text-ink-300">
