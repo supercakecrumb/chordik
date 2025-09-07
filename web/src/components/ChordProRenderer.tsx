@@ -32,7 +32,7 @@ const ChordProRenderer = ({ lines, preview = false }: ChordProRendererProps) => 
           <span
             key={i}
             className="chord-token"
-            style={{ minWidth: `${segment.lyric.length}ch`, display: 'inline-block' }}
+            style={{ minWidth: `${Math.max(segment.lyric.length, 1)}ch`, display: 'inline-block' }}
           >
             {segment.chord}
           </span>
