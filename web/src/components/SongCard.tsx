@@ -48,7 +48,7 @@ const SongCard = ({ song }: { song: Song }) => {
 
       <div className="mt-4 flex justify-between items-center">
         <span className="text-sm text-ink-300">
-          Added by {song.CreatedBy.DisplayName}
+          Added by <span className="gradient-text">{song.CreatedBy.DisplayName}</span>
         </span>
       </div>
     </Card>

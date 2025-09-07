@@ -129,7 +129,7 @@ const SongDetail = () => {
       </Card>
 
       <div className="flex justify-between items-center text-sm text-ink-300">
-        <span>Added by {song.CreatedBy.DisplayName}</span>
+        <span>Added by <span className="gradient-text">{song.CreatedBy.DisplayName}</span></span>
         <span>Created: {new Date(song.CreatedAt).toLocaleDateString()}</span>
       </div>
     </div>
