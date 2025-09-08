@@ -18,6 +18,8 @@
   --shadow-ring: 0 0 0 2px rgba(90,200,250,0.35);
   --pair-gap: 0;
   --chord-nudge: -0.45em;
+  --preview-chord-gap: 0.2ch;
+  --preview-pair-gap: .8em;
 }
 
 html, body, #root {
@@ -100,6 +102,11 @@ a { text-underline-offset: 3px; }
   margin: 10px 0;            /* tighter between lines */
 }
 
+/* Increase vertical spacing between chord and lyric rows in preview mode */
+.preview-mode .chord-line {
+  row-gap: var(--preview-pair-gap, 0.3em);
+}
+
 /* Song detail container with auto-fit capability */
 .song-detail {
   --chord-line-size: 18px; /* Default max size for auto-fit */
@@ -133,6 +140,16 @@ a { text-underline-offset: 3px; }
 .chord-token {
   color: var(--primary);
   text-shadow: 0 0 0 rgba(0,0,0,0.01); /* crisp */
+}
+
+/* Add horizontal spacing between chord tokens in preview mode */
+.preview-line--truncate .chord-token {
+  padding-right: var(--preview-chord-gap);
+}
+
+/* Remove padding from the last chord token to avoid extra space */
+.preview-line--truncate .chord-token:last-child {
+  padding-right: 0;
 }
 
 /* Section headings (Verse/Chorus) */
