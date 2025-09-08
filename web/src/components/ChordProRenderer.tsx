@@ -305,7 +305,7 @@ const ChordProRenderer = ({
   }, [autoFit, debouncedResize, performAutoShrink]);
 
   return (
-    <div ref={sheetRef} className="chord-sheet">
+    <div ref={sheetRef} className={`chord-sheet ${preview ? 'preview-mode' : ''}`}>
       {lines.map((line, index) => {
         if (line.type === 'metadata') {
           // Don't render metadata lines
