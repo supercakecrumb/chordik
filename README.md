@@ -1,6 +1,6 @@
 # Chordik
 
-A modern chord sheet viewer with a trans flag theme, built with React, TypeScript, and Go.
+A modern chord sheet viewer built because my friend asked me to pick out the chords for her song using the audio of this song. I mean, I just didn't want to search for existing solution for some reason.
 
 ## Features
 
