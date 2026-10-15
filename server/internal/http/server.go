@@ -30,13 +30,16 @@ func NewServer(db *gorm.DB) *Server {
 		voteService: votes.NewVoteService(db),
 	}
 
-	// Add CORS middleware (allow all origins)
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	config.AllowCredentials = true
-	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With"}
-	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
-	s.router.Use(cors.New(config))
+	// Same-origin deployments need no CORS. Allow only the configured frontend
+	// when a separate browser origin is explicitly used.
+	if origin := os.Getenv("FRONTEND_ORIGIN"); origin != "" {
+		config := cors.DefaultConfig()
+		config.AllowOrigins = []string{origin}
+		config.AllowCredentials = true
+		config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With"}
+		config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+		s.router.Use(cors.New(config))
+	}
 
 	// Add CSRF protection middleware for mutating requests
 	s.router.Use(csrfMiddleware())

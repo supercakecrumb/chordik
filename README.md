@@ -119,3 +119,16 @@ window.__ENV = {
 ## License
 
 This project is licensed under the MIT License.
+
+## Browser origins and sessions
+
+The development proxy preserves the browser Host header. Docker development
+allows `http://localhost:5173`; set `FRONTEND_ORIGIN` to an exact origin if the
+frontend is served elsewhere. Do not use a wildcard. The same configured origin
+is used for credentialed CORS and unsafe-request validation.
+
+Production must use HTTPS and `GIN_MODE=release`. The production compose sets
+these session protections and defaults `FRONTEND_ORIGIN` to the existing public
+site. Set it explicitly when using another domain. Reverse proxies must retain
+the public Host header. Cookies are HttpOnly and SameSite=Lax, and are Secure
+in production even when TLS terminates before the API.

@@ -19,6 +19,8 @@ services:
       - DB_NAME=${POSTGRES_DB}
       - DB_PORT=5432
       - JWT_SECRET=${JWT_SECRET}
+      - GIN_MODE=release
+      - FRONTEND_ORIGIN=${FRONTEND_ORIGIN:-https://chordik.vkiel.com}
     ports:
       - "127.0.0.1:8080:8080"    # localhost only
     depends_on: [db]

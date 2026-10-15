@@ -46,3 +46,35 @@ func TestHTTPSCookieProtection(t *testing.T) {
 		t.Fatal("session cookie protections missing")
 	}
 }
+
+func TestProxyOriginTopologies(t *testing.T) {
+	for _, tc := range []struct {
+		name, mode, configured, origin, target string
+		want                                   int
+	}{
+		{"vite preserves browser host", gin.TestMode, "", "http://localhost:5173", "http://localhost:5173/", 204},
+		{"configured split frontend", gin.TestMode, "http://localhost:5173", "http://localhost:5173", "http://localhost:8080/", 204},
+		{"TLS terminates upstream", gin.ReleaseMode, "https://chordik.example.invalid", "https://chordik.example.invalid", "http://chordik.example.invalid/", 204},
+		{"untrusted frontend denied", gin.TestMode, "http://localhost:5173", "http://attacker.invalid", "http://localhost:8080/", 403},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			gin.SetMode(tc.mode)
+			defer gin.SetMode(gin.TestMode)
+			t.Setenv("FRONTEND_ORIGIN", tc.configured)
+			r := gin.New()
+			r.Use(csrfMiddleware())
+			r.POST("/", func(c *gin.Context) { setSessionCookie(c, uuid.New()); c.Status(204) })
+			req := httptest.NewRequest("POST", tc.target, nil)
+			req.Header.Set("Origin", tc.origin)
+			req.Header.Set("X-Requested-With", "XMLHttpRequest")
+			w := httptest.NewRecorder()
+			r.ServeHTTP(w, req)
+			if w.Code != tc.want {
+				t.Fatalf("status=%d want=%d", w.Code, tc.want)
+			}
+			if tc.mode == gin.ReleaseMode && !w.Result().Cookies()[0].Secure {
+				t.Fatal("proxy session cookie is not secure")
+			}
+		})
+	}
+}
