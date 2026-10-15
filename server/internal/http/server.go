@@ -2,6 +2,8 @@ package http
 
 import (
 	"net/http"
+	"net/url"
+	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -85,7 +87,6 @@ func (s *Server) handleHealthCheck(c *gin.Context) {
 	if err := s.db.Exec("SELECT 1").Error; err != nil {
 		c.JSON(http.StatusServiceUnavailable, gin.H{
 			"status": "db_unavailable",
-			"error":  err.Error(),
 		})
 		return
 	}
@@ -125,8 +126,20 @@ func csrfMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// TODO: Implement proper CSRF token validation
-		// For now just check for custom header
+		// Validate the browser origin as well as the non-simple request header.
+		if origin := c.GetHeader("Origin"); origin != "" {
+			u, err := url.Parse(origin)
+			allowed := os.Getenv("FRONTEND_ORIGIN")
+			scheme := "http"
+			if secureSessionCookie(c) {
+				scheme = "https"
+			}
+			if err != nil || (u.Scheme != "https" && u.Scheme != "http") || u.User != nil || u.Path != "" || u.RawQuery != "" || u.Fragment != "" ||
+				(origin != scheme+"://"+c.Request.Host && (allowed == "" || origin != allowed)) {
+				c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "CSRF protection"})
+				return
+			}
+		}
 		if c.GetHeader("X-Requested-With") != "XMLHttpRequest" {
 			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "CSRF protection"})
 			return

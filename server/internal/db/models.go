@@ -8,8 +8,8 @@ import (
 
 type User struct {
 	ID           uuid.UUID `gorm:"type:uuid;primaryKey;default:gen_random_uuid()"`
-	Email        string    `gorm:"type:citext;unique;not null"`
-	PasswordHash string    `gorm:"type:text;not null"`
+	Email        string    `gorm:"type:citext;unique;not null" json:"-"`
+	PasswordHash string    `gorm:"type:text;not null" json:"-"`
 	DisplayName  string    `gorm:"type:text;unique;not null"`
 	CreatedAt    time.Time `gorm:"autoCreateTime"`
 	UpdatedAt    time.Time `gorm:"autoUpdateTime"`

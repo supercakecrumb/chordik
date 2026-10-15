@@ -94,7 +94,8 @@ func (h *AuthHandlers) Logout(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("session", "", -1, "/", "", false, true)
+	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetCookie("session", "", -1, "/", "", secureSessionCookie(c), true)
 	c.Status(http.StatusNoContent)
 }
 
@@ -119,7 +120,8 @@ func (h *AuthHandlers) GetCurrentUser(c *gin.Context) {
 }
 
 func setSessionCookie(c *gin.Context, sessionID uuid.UUID) {
-	c.SetCookie("session", sessionID.String(), int((time.Hour * 24 * 7).Seconds()), "/", "", false, true)
+	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetCookie("session", sessionID.String(), int((time.Hour * 24 * 7).Seconds()), "/", "", secureSessionCookie(c), true)
 }
 
 func getSessionID(c *gin.Context) (uuid.UUID, error) {
@@ -128,4 +130,9 @@ func getSessionID(c *gin.Context) (uuid.UUID, error) {
 		return uuid.Nil, err
 	}
 	return uuid.Parse(cookie)
+}
+
+// HTTPS reverse proxies forward the original scheme; release builds require TLS.
+func secureSessionCookie(c *gin.Context) bool {
+	return gin.Mode() == gin.ReleaseMode || c.Request.TLS != nil || c.GetHeader("X-Forwarded-Proto") == "https"
 }
